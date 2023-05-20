@@ -12,6 +12,7 @@ class CameraPageController {
     ref.read(DI.cameraControllerProvider.notifier).state =
         CameraController(cam, ResolutionPreset.high);
     await ref.read(DI.cameraControllerProvider)!.initialize();
+    ref.read(CameraDI.isCameraInitialized.notifier).state = true;
   }
 
   void recordVideo(WidgetRef ref) async {

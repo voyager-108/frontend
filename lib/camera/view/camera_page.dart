@@ -17,6 +17,7 @@ class _CameraPageState extends ConsumerState<CameraPage> {
   void initState() {
     ref.read(CameraDI.cameraPageControllerProvider).initCamera(ref);
     super.initState();
+    ref.read(DI.locationManagerProvider);
   }
 
   @override
@@ -27,7 +28,8 @@ class _CameraPageState extends ConsumerState<CameraPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (ref.watch(DI.cameraControllerProvider) == null) {
+    if (ref.watch(DI.cameraControllerProvider) == null ||
+        !ref.watch(CameraDI.isCameraInitialized)) {
       return const Center(
         child: CircularProgressIndicator(),
       );
