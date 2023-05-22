@@ -4,11 +4,14 @@ PODS:
   - Flutter (1.0.0)
   - location (0.0.1):
     - Flutter
+  - sensors_plus (0.0.1):
+    - Flutter
 
 DEPENDENCIES:
   - camera_avfoundation (from `.symlinks/plugins/camera_avfoundation/ios`)
   - Flutter (from `Flutter`)
   - location (from `.symlinks/plugins/location/ios`)
+  - sensors_plus (from `.symlinks/plugins/sensors_plus/ios`)
 
 EXTERNAL SOURCES:
   camera_avfoundation:
@@ -17,11 +20,14 @@ EXTERNAL SOURCES:
     :path: Flutter
   location:
     :path: ".symlinks/plugins/location/ios"
+  sensors_plus:
+    :path: ".symlinks/plugins/sensors_plus/ios"
 
 SPEC CHECKSUMS:
   camera_avfoundation: 3125e8cd1a4387f6f31c6c63abb8a55892a9eeeb
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   location: 3a2eed4dd2fab25e7b7baf2a9efefe82b512d740
+  sensors_plus: bda64198ccc7d3ccbb49e6ae17d92f67687bee20
 
 PODFILE CHECKSUM: a57f30d18f102dd3ce366b1d62a55ecbef2158e5
 

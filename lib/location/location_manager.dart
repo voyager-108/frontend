@@ -34,8 +34,7 @@ class LocationManager {
     }
     _location.onLocationChanged.listen((event) {
       ref.read(DI.locationHistoryProvider).add(event);
-      dev.log(
-          "ALTITUDE ${event.altitude} with accuracy ${event.accuracy} AT ${event.time}");
+      dev.log("SPEED ${event.speed} AT ${event.time}");
     });
   }
 }
