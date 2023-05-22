@@ -23,17 +23,19 @@ class _FloorTitleState extends ConsumerState<FloorTitle> {
       lightTheme = true;
     }
     return Stack(children: [
-      Container(
-          decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: <Color>[
-            Colors.black.withOpacity(0.5),
-            Colors.black.withOpacity(0.0),
-          ],
-        ),
-      )),
+      lightTheme
+          ? Container()
+          : Container(
+              decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: <Color>[
+                  Colors.black.withOpacity(0.5),
+                  Colors.black.withOpacity(0.0),
+                ],
+              ),
+            )),
       Column(
         children: [
           Text(
@@ -48,7 +50,7 @@ class _FloorTitleState extends ConsumerState<FloorTitle> {
             style: Theme.of(context).textTheme.bodyMedium?.apply(
                 color: lightTheme
                     ? Theme.of(context).colorScheme.secondary
-                    : Colors.white70),
+                    : Colors.white.withOpacity(0.5)),
           )
         ],
       ),

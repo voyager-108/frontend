@@ -3,11 +3,13 @@ class HouseModel {
   int _floorIndex = 0;
   bool buildingCovered = false;
   int currentFloor;
+  int currentFlat;
   int currentFlatsLeft;
 
   HouseModel(this._floorsFlats)
       : currentFloor = _floorsFlats[0].floorNumber,
-        currentFlatsLeft = _floorsFlats[0].flatsAmount;
+        currentFlatsLeft = _floorsFlats[0].flatsAmount,
+        currentFlat = 1;
 
   void nextFlat() {
     if (currentFlatsLeft == 0 && _floorIndex == _floorsFlats.length - 1) {
@@ -19,9 +21,11 @@ class HouseModel {
       _floorIndex += 1;
       currentFloor = _floorsFlats[_floorIndex].floorNumber;
       currentFlatsLeft = _floorsFlats[_floorIndex].flatsAmount;
+      currentFlat = 1;
     } else {
       // move to the next flat on the same floor
       currentFlatsLeft -= 1;
+      currentFlat += 1;
     }
   }
 }

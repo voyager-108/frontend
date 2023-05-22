@@ -1,6 +1,5 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/camera/view/widgets/floor_title.dart';
 
@@ -32,15 +31,13 @@ class _CameraPageState extends ConsumerState<CameraPage> {
               children: [
                 const FloorTitle(),
                 const Spacer(),
-                FloatingActionButton(
-                  backgroundColor: Colors.red,
-                  child: Icon(ref.watch(CameraDI.isRecording)
-                      ? Icons.stop
-                      : Icons.circle),
-                  onPressed: () => ref
-                      .read(CameraDI.cameraPageControllerProvider)
-                      .recordVideo(ref),
-                )
+                ElevatedButton(
+                    onPressed: () {
+                      ref
+                          .read(CameraDI.cameraPageControllerProvider)
+                          .stopRecording(ref);
+                    },
+                    child: const Text("Закончить запись квартиры"))
               ],
             )
           ],
