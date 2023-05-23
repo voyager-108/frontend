@@ -15,25 +15,30 @@ class ProgressPage extends ConsumerStatefulWidget {
 
 class _ProgressPageState extends ConsumerState<ProgressPage> {
   @override
-  Widget build(BuildContext context) => Scaffold(
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+  Widget build(BuildContext context) => SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.max,
           children: [
             const FloorTitle(),
-            Text(
-              "Прогресс",
-              style: Theme.of(context)
-                  .textTheme
-                  .titleMedium
-                  ?.apply(color: Theme.of(context).colorScheme.background),
+            Padding(
+              padding: const EdgeInsets.only(left: 16.0),
+              child: Text(
+                "Прогресс",
+                textAlign: TextAlign.start,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleLarge
+                    ?.apply(color: Colors.black87),
+              ),
             ),
+            // TODO make another widget for the empty list
             Expanded(
               child: ListView.builder(
-                  itemCount:
-                      ref.watch(DI.housePageState).progress.progress.length,
+                  itemCount: ref.watch(DI.housePageState).progressLength(),
                   itemBuilder: (context, index) {
                     switch (
-                        ref.watch(DI.housePageState).progress.progress[index]) {
+                        ref.watch(DI.housePageState).progressElement(index)) {
                       case FloorProgressLoading state:
                         return ListTile(
                           title: Text(
@@ -56,15 +61,20 @@ class _ProgressPageState extends ConsumerState<ProgressPage> {
                   }),
             ),
             const Spacer(),
-            ElevatedButton(
-                onPressed: () {
-                  ref
-                      .read(CameraDI.cameraPageControllerProvider)
-                      .startRecording(
-                          ref, ref.read(DI.housePageState).house.currentFloor);
-                },
-                child: Text(
-                    "Записать ${ref.watch(DI.housePageState).house.currentFlat} квартиру"))
+            Align(
+              alignment: Alignment.center,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 16.0),
+                child: ElevatedButton(
+                    onPressed: () {
+                      ref
+                          .read(CameraDI.cameraPageControllerProvider)
+                          .startRecording(ref);
+                    },
+                    child: Text(
+                        "Записать квартиру ${ref.watch(DI.housePageState).currentFlat()}")),
+              ),
+            )
           ],
         ),
       );

@@ -1,10 +1,10 @@
 import '../../models/house_model.dart';
 import '../../models/progress_model.dart';
 
-class CameraPageStates {
+class CameraPageState {
   HouseModel house;
   HouseProgressModel progress;
-  int? currentlyRecordingFloor;
+  int? currentlyRecordingFlat;
 
-  CameraPageStates(this.house, this.progress);
+  CameraPageState(this.house, this.progress);
 }

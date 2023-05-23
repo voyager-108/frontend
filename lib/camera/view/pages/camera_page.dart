@@ -22,22 +22,29 @@ class _CameraPageState extends ConsumerState<CameraPage> {
         child: CircularProgressIndicator(),
       );
     } else {
-      return Center(
+      return SafeArea(
         child: Stack(
-          alignment: Alignment.bottomCenter,
+          alignment: Alignment.center,
           children: [
+            Container(
+              color: Colors.black,
+            ),
             CameraPreview(ref.read(DI.cameraControllerProvider)!),
             Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const FloorTitle(),
                 const Spacer(),
-                ElevatedButton(
-                    onPressed: () {
-                      ref
-                          .read(CameraDI.cameraPageControllerProvider)
-                          .stopRecording(ref);
-                    },
-                    child: const Text("Закончить запись квартиры"))
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        ref
+                            .read(CameraDI.cameraPageControllerProvider)
+                            .stopRecording(ref);
+                      },
+                      child: const Text("Закончить запись квартиры")),
+                )
               ],
             )
           ],

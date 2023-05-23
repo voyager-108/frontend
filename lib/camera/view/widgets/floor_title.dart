@@ -15,45 +15,50 @@ class _FloorTitleState extends ConsumerState<FloorTitle> {
 
   @override
   Widget build(BuildContext context) {
-    if (ref.watch(DI.housePageState).currentlyRecordingFloor == null) {
-      // the floor is being recorded
-      lightTheme = false;
-    } else {
-      // the user watches on the progress
-      lightTheme = true;
-    }
-    return Stack(children: [
-      lightTheme
-          ? Container()
-          : Container(
-              decoration: BoxDecoration(
+    lightTheme = !ref.watch(DI.housePageState).isRecording();
+    return Container(
+      decoration: lightTheme
+          ? const BoxDecoration()
+          : BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: <Color>[
-                  Colors.black.withOpacity(0.5),
+                  Colors.black.withOpacity(0.7),
                   Colors.black.withOpacity(0.0),
                 ],
               ),
-            )),
-      Column(
-        children: [
-          Text(
-            "${ref.watch(DI.housePageState).house.currentFloor} этаж",
-            style: Theme.of(context).textTheme.titleLarge?.apply(
-                color: lightTheme
-                    ? Theme.of(context).colorScheme.primary
-                    : Colors.white),
-          ),
-          Text(
-            "Осталось ${ref.watch(DI.housePageState).house.currentFlatsLeft} квартиры на этаже",
-            style: Theme.of(context).textTheme.bodyMedium?.apply(
-                color: lightTheme
-                    ? Theme.of(context).colorScheme.secondary
-                    : Colors.white.withOpacity(0.5)),
-          )
-        ],
+            ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(
+              height: 40,
+            ),
+            Text("${ref.watch(DI.housePageState).currentFloor()} этаж",
+                textAlign: TextAlign.start,
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineLarge
+                    ?.apply(color: lightTheme ? Colors.black87 : Colors.white)),
+            Text(
+              lightTheme
+                  ? "Осталось ${ref.watch(DI.housePageState).currentFlatsLeft()} квартиры на этаже"
+                  : "Записывается ${ref.watch(DI.housePageState).currentlyRecordingFlat()!} квартира, осталось ${ref.watch(DI.housePageState).currentFlatsLeft()}",
+              textAlign: TextAlign.start,
+              style: Theme.of(context).textTheme.bodyMedium?.apply(
+                  color: lightTheme
+                      ? Colors.black54
+                      : Colors.white.withOpacity(0.5)),
+            ),
+            SizedBox(
+              height: lightTheme ? 16 : 80,
+            )
+          ],
+        ),
       ),
-    ]);
+    );
   }
 }

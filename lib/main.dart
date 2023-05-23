@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:frontend/camera/view/pages/progress_page.dart';
+import 'package:frontend/camera/view/widgets/floor_title.dart';
 import 'camera/view/pages/house_page.dart';
 
 void main() {
@@ -12,11 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: ProviderScope(
-          child: SafeArea(
-              child:
-                  Padding(padding: EdgeInsets.all(16.0), child: HousePage()))),
+      home: ProviderScope(child: Scaffold(body: HousePage())),
     );
   }
 }
