@@ -1,4 +1,6 @@
 import 'package:camera/camera.dart';
+import 'package:flutter/animation.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/camera/presentation/camera_page_change_notifier.dart';
 
@@ -18,4 +20,5 @@ class DI {
   static final housePageState =
       ChangeNotifierProvider<CameraPageChangeNotifier>(
           (_) => CameraPageChangeNotifier());
+  static final recordButtonKey = Provider<GlobalKey>((_) => GlobalKey());
 }

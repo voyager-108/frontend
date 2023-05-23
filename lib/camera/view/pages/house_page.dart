@@ -34,12 +34,7 @@ class _HousePageState extends ConsumerState<HousePage> {
       return const Center(
         child: Text("Нет доступа к камере"),
       );
-    } else if (ref.watch(DI.housePageState).isRecording()) {
-      // The camera is recording
-      return const CameraPage();
-    } else {
-      // The camera is idle
-      return const ProgressPage();
     }
+    return const ProgressPage();
   }
 }
