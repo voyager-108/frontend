@@ -1,32 +1,44 @@
+import 'package:isar/isar.dart';
+
+@embedded
 class HouseModel {
   final List<FloorModel> _floorsFlats;
   int _floorIndex = 0;
   bool buildingCovered = false;
-  int currentFloor;
-  int currentFlat;
-  int currentFlatsLeft;
+  bool hasNoProgress = true;
+  int floor;
+  int flat;
+  int flatsLeft;
 
-  HouseModel(this._floorsFlats)
-      : currentFloor = _floorsFlats[0].floorNumber,
-        currentFlatsLeft = _floorsFlats[0].flatsAmount,
-        currentFlat = 1;
+  HouseModel()
+      : _floorsFlats = [],
+        floor = 0,
+        flat = 0,
+        flatsLeft = 0;
 
-  void nextFlat() {
-    if (currentFlatsLeft == 0 && _floorIndex == _floorsFlats.length - 1) {
-      // the building is fully covered
+  HouseModel.withFlat(this._floorsFlats)
+      : floor = _floorsFlats[0].floorNumber,
+        flat = 0,
+        flatsLeft = _floorsFlats[0].flatsAmount;
+
+  HouseModel.restore(this._floorsFlats, this.floor, this.flat, this.flatsLeft,
+      this.hasNoProgress, this.buildingCovered, this._floorIndex);
+
+  void startFlatRecording() {
+    flat += 1;
+    flatsLeft -= 1;
+  }
+
+  void endFlatRecording() {
+    if (flatsLeft == 0 && _floorIndex == _floorsFlats.length - 1) {
       buildingCovered = true;
-    } else if (currentFlatsLeft == 0) {
-      // all the flats on the current floor are covered,
-      // move to the next floor
+    } else if (flatsLeft == 0) {
       _floorIndex += 1;
-      currentFloor = _floorsFlats[_floorIndex].floorNumber;
-      currentFlatsLeft = _floorsFlats[_floorIndex].flatsAmount;
-      currentFlat = 1;
-    } else {
-      // move to the next flat on the same floor
-      currentFlatsLeft -= 1;
-      currentFlat += 1;
+      floor = _floorsFlats[_floorIndex].floorNumber;
+      flat = 0;
+      flatsLeft = _floorsFlats[_floorIndex].flatsAmount;
     }
+    if (hasNoProgress) hasNoProgress = false;
   }
 }
 

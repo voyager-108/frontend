@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:camera/camera.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/di.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'dart:developer' as dev;
 
 import '../camera_di.dart';
@@ -14,6 +15,8 @@ class CameraPageController {
   static const int splitPeriod = 5;
 
   Future<void> initCamera(WidgetRef ref) async {
+    ref.read(CameraDI.cameraPermissionStatus.notifier).state =
+        await Permission.camera.status;
     final cameras = await availableCameras();
     final cam = cameras.firstWhere(
         (camera) => camera.lensDirection == CameraLensDirection.back);

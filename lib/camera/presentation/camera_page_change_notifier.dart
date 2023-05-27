@@ -1,36 +1,40 @@
 import 'package:flutter/cupertino.dart';
-import 'package:frontend/camera/presentation/camera_page_state.dart';
+import 'package:frontend/camera/presentation/house_page_state.dart';
 
 import '../../models/house_model.dart';
-import '../../models/progress_model.dart';
+import '../../models/house_progress_model.dart';
 
 class CameraPageChangeNotifier extends ChangeNotifier {
-  final _state = CameraPageState(
-      HouseModel([
-        FloorModel(1, 12),
-        FloorModel(2, 11),
-        FloorModel(3, 13),
-        FloorModel(4, 10),
+  HousePageState _state = HousePageState.withHouse(
+      HouseModel.withFlat([
+        FloorModel(1, 4),
+        FloorModel(2, 3),
       ]),
       HouseProgressModel());
 
-  bool isRecording() => _state.currentlyRecordingFlat != null;
-  int? currentlyRecordingFlat() => _state.currentlyRecordingFlat;
-  int currentFloor() => _state.house.currentFloor;
-  int currentFlat() => _state.house.currentFlat;
-  int currentFlatsLeft() => _state.house.currentFlatsLeft;
+  bool isRecording() => _state.isRecording;
+  bool hasNoProgress() => _state.house.hasNoProgress;
+  bool isBuildingCovered() => _state.house.buildingCovered;
+  int currentFloor() => _state.house.floor;
+  int currentFlat() => _state.house.flat;
+  int currentFlatsLeft() => _state.house.flatsLeft;
   int progressLength() => _state.progress.progress.length;
   FloorProgressModel progressElement(int index) =>
       _state.progress.progress[index];
 
   void startRecording() {
-    _state.currentlyRecordingFlat = _state.house.currentFlat;
-    _state.house.nextFlat();
+    _state.house.startFlatRecording();
+    _state.isRecording = true;
     notifyListeners();
   }
 
   void stopRecording() {
-    _state.currentlyRecordingFlat = null;
+    _state.house.endFlatRecording();
+    _state.isRecording = false;
     notifyListeners();
+  }
+
+  void init(HousePageState newState) {
+    _state = newState;
   }
 }

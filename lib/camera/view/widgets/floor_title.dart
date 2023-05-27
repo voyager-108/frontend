@@ -46,7 +46,7 @@ class _FloorTitleState extends ConsumerState<FloorTitle> {
             Text(
               lightTheme
                   ? "Осталось ${ref.watch(DI.housePageState).currentFlatsLeft()} квартиры на этаже"
-                  : "Записывается ${ref.watch(DI.housePageState).currentlyRecordingFlat()!} квартира, осталось ${ref.watch(DI.housePageState).currentFlatsLeft()}",
+                  : "Записывается ${ref.watch(DI.housePageState).currentFlat()} квартира, осталось ${ref.watch(DI.housePageState).currentFlatsLeft()}",
               textAlign: TextAlign.start,
               style: Theme.of(context).textTheme.bodyMedium?.apply(
                   color: lightTheme
