@@ -40,7 +40,7 @@ class _CameraPageState extends ConsumerState<CameraPage> {
                       onPressed: () {
                         ref
                             .read(CameraDI.cameraPageControllerProvider)
-                            .stopRecording(ref);
+                            .stopRecording();
                         Navigator.pop(context);
                       },
                       child: const Text("Закончить запись квартиры")),

@@ -23,7 +23,7 @@ class _HousePageState extends ConsumerState<HousePage> {
   void initState() {
     cameraController = ref.read(CameraDI.cameraPageControllerProvider);
     housePageController = ref.read(DI.housePageControllerProvider);
-    cameraController.initCamera(ref);
+    cameraController.initCamera();
     super.initState();
   }
 
@@ -81,7 +81,7 @@ class _HousePageState extends ConsumerState<HousePage> {
                 ),
                 ElevatedButton(
                     onPressed: () {
-                      cameraController.updatePermissionStatus(ref);
+                      cameraController.updatePermissionStatus();
                     },
                     child: const Text("Подключиться к камере")),
                 const SizedBox(

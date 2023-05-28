@@ -15,7 +15,7 @@ class HousePickingPage extends ConsumerStatefulWidget {
 class _HousePickingPageState extends ConsumerState<ConsumerStatefulWidget> {
   @override
   void initState() {
-    ref.read(DI.housePickingPageControllerProvider).init(ref);
+    ref.read(DI.housePickingPageControllerProvider).init();
     super.initState();
   }
 
@@ -68,7 +68,7 @@ class _HousePickingPageState extends ConsumerState<ConsumerStatefulWidget> {
                       onPressed: () {
                         ref
                             .read(DI.housePickingPageControllerProvider)
-                            .updatePermissionStatus(ref);
+                            .updatePermissionStatus();
                       },
                       child: const Text("Обновить локацию")),
                   const SizedBox(

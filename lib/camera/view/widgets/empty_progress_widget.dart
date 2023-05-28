@@ -32,7 +32,7 @@ class EmptyProgressWidget extends ConsumerWidget {
                     onPressed: () {
                       ref
                           .read(CameraDI.cameraPageControllerProvider)
-                          .startRecording(ref);
+                          .startRecording();
                       Navigator.push(
                           context,
                           FadePageRoute(ProviderScope(

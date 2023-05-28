@@ -7,5 +7,5 @@ class CameraDI {
   static final cameraPermissionStatus =
       StateProvider<PermissionStatus?>((_) => null);
   static final cameraPageControllerProvider =
-      Provider((_) => CameraPageController());
+      Provider((ref) => CameraPageController(ref));
 }

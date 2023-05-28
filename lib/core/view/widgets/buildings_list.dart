@@ -32,7 +32,7 @@ class BuildingsList extends ConsumerWidget {
                       onTap: () {
                         ref
                             .read(DI.mainPageController)
-                            .setHouse(buildings.byIndex(i), ref);
+                            .setHouse(buildings.byIndex(i));
                         Navigator.push(
                             context,
                             MaterialPageRoute(

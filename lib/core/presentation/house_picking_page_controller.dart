@@ -10,35 +10,39 @@ import '../../models/house_model.dart';
 import '../../models/house_progress_model.dart';
 
 class HousePickingPageController {
-  void init(WidgetRef ref) async {
+  final Ref _ref;
+
+  HousePickingPageController(this._ref);
+
+  void init() async {
     // make the location manager work by accessing it the first time
-    ref.read(DI.locationManagerProvider);
-    updatePermissionStatus(ref);
+    _ref.read(DI.locationManagerProvider);
+    updatePermissionStatus();
   }
 
-  void updatePermissionStatus(WidgetRef ref) async {
-    ref.read(DI.locationPermissionStatus.notifier).state =
+  void updatePermissionStatus() async {
+    _ref.read(DI.locationPermissionStatus.notifier).state =
         await Permission.location.status;
-    dev.log("${ref.read(DI.locationPermissionStatus)}");
+    dev.log("${_ref.read(DI.locationPermissionStatus)}");
   }
 
-  void getOptions(LocationData location, WidgetRef ref) async {
+  void getOptions(LocationData location) async {
     // ref.invalidate(provider)
     // go to the API
-    final api = ref.read(DI.api);
+    final api = _ref.read(DI.api);
     final options = await api.getOptionsForLocation(location);
-    ref.read(DI.availableHousesList.notifier).state = options;
+    _ref.read(DI.availableHousesList.notifier).state = options;
   }
 
-  void openHouse(WidgetRef ref, HouseModel e) {
+  void openHouse(HouseModel e) {
     final possibleExistingOption =
-        ref.read(DI.housePagesChangeNotifier).byHouseModel(e);
+        _ref.read(DI.housePagesChangeNotifier).byHouseModel(e);
     if (possibleExistingOption == null) {
       final pageState = HousePageState.withHouse(e, HouseProgressModel());
-      ref.read(DI.mainPageController).setHouse(pageState, ref);
-      ref.read(DI.housePagesChangeNotifier).add(pageState);
+      _ref.read(DI.mainPageController).setHouse(pageState);
+      _ref.read(DI.housePagesChangeNotifier).add(pageState);
     } else {
-      ref.read(DI.mainPageController).setHouse(possibleExistingOption, ref);
+      _ref.read(DI.mainPageController).setHouse(possibleExistingOption);
     }
   }
 }

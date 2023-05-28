@@ -25,7 +25,7 @@ class DI {
 
   static final storageProvider = Provider<Storage>((_) => Storage());
   static final mainPageController =
-      Provider<MainPageController>((ref) => MainPageController());
+      Provider<MainPageController>((ref) => MainPageController(ref));
   static final housePagesChangeNotifier =
       ChangeNotifierProvider<HousePagesChangeNotifier>(
           (_) => HousePagesChangeNotifier());
@@ -37,7 +37,7 @@ class DI {
 
   // house picking page
   static final housePickingPageControllerProvider =
-      Provider((_) => HousePickingPageController());
+      Provider((ref) => HousePickingPageController(ref));
   static final locationPermissionStatus =
       StateProvider<PermissionStatus?>((_) => null);
   static final availableHousesList =

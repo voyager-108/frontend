@@ -18,7 +18,7 @@ class _HousePickingListState extends ConsumerState {
   void initState() {
     ref
         .read(DI.housePickingPageControllerProvider)
-        .getOptions(ref.read(DI.locationHistoryProvider).getLocation()!, ref);
+        .getOptions(ref.read(DI.locationHistoryProvider).getLocation()!);
     super.initState();
   }
 
@@ -63,7 +63,7 @@ class _HousePickingListState extends ConsumerState {
                     onTap: () {
                       ref
                           .read(DI.housePickingPageControllerProvider)
-                          .openHouse(ref, e);
+                          .openHouse(e);
                       Navigator.pop(context);
                       Navigator.push(
                           context,

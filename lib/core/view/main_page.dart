@@ -16,7 +16,7 @@ class MainPage extends ConsumerStatefulWidget {
 class _MainPageState extends ConsumerState<MainPage> {
   @override
   void initState() {
-    ref.read(DI.mainPageController).init(ref);
+    ref.read(DI.mainPageController).init();
     super.initState();
   }
 
