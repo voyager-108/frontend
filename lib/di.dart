@@ -1,31 +1,45 @@
 import 'package:camera/camera.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:frontend/camera/presentation/camera_page_change_notifier.dart';
+import 'package:frontend/camera/presentation/house_page_change_notifier.dart';
+import 'package:frontend/camera/presentation/house_page_controller.dart';
 import 'package:frontend/core/presentation/house_pages_change_notifier.dart';
+import 'package:frontend/core/presentation/house_picking_page_controller.dart';
 import 'package:frontend/core/presentation/main_page_controller.dart';
 import 'package:frontend/persistence/storage.dart';
+import 'package:permission_handler/permission_handler.dart';
 
-import 'camera/presentation/house_page_state.dart';
+import 'core/data/api.dart';
 import 'location/location_history.dart';
 import 'location/location_manager.dart';
+import 'models/house_model.dart';
 
 class DI {
   static final cameraControllerProvider =
       StateProvider<CameraController?>((_) => null);
   static final locationHistoryProvider =
-      Provider<LocationHistory>((_) => LocationHistory());
+      ChangeNotifierProvider<LocationHistory>((_) => LocationHistory());
   static final locationManagerProvider =
       Provider((ref) => LocationManager(ref));
-  static final housePageState =
-      ChangeNotifierProvider<CameraPageChangeNotifier>(
-          (_) => CameraPageChangeNotifier());
+  static final housePageState = ChangeNotifierProvider<HousePageChangeNotifier>(
+      (_) => HousePageChangeNotifier());
 
   static final storageProvider = Provider<Storage>((_) => Storage());
-  static final mainPageController = Provider<MainPageController>(
-      (ref) => MainPageController(ref.read(storageProvider)));
-  // static final housePagesProvider =
-  //     StateProvider<List<HousePageState>>((_) => []);
+  static final mainPageController =
+      Provider<MainPageController>((ref) => MainPageController());
   static final housePagesChangeNotifier =
       ChangeNotifierProvider<HousePagesChangeNotifier>(
           (_) => HousePagesChangeNotifier());
+  static final housePageControllerProvider =
+      Provider((ref) => HousePageController());
+
+  // API
+  static final api = Provider<API>((_) => API());
+
+  // house picking page
+  static final housePickingPageControllerProvider =
+      Provider((_) => HousePickingPageController());
+  static final locationPermissionStatus =
+      StateProvider<PermissionStatus?>((_) => null);
+  static final availableHousesList =
+      StateProvider<List<HouseModel>?>((_) => null);
 }

@@ -4,13 +4,15 @@ import 'package:frontend/camera/presentation/house_page_state.dart';
 import '../../models/house_model.dart';
 import '../../models/house_progress_model.dart';
 
-class CameraPageChangeNotifier extends ChangeNotifier {
+class HousePageChangeNotifier extends ChangeNotifier {
   HousePageState _state = HousePageState.withHouse(
       HouseModel.withFlat([
         FloorModel(1, 4),
         FloorModel(2, 3),
-      ]),
+      ], -1, -1),
       HouseProgressModel());
+
+  HousePageState getState() => _state;
 
   bool isRecording() => _state.isRecording;
   bool hasNoProgress() => _state.house.hasNoProgress;

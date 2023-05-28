@@ -1,6 +1,3 @@
-import 'package:isar/isar.dart';
-
-@embedded
 class FloorProgressModel {
   int floorNumber;
   int flatNumber;
@@ -15,10 +12,8 @@ class FloorProgressModel {
       this.floorNumber, this.flatNumber, this.status, this.info);
 }
 
-@embedded
 class AdditionalInfoModel {}
 
-@embedded
 class HouseProgressModel {
   List<FloorProgressModel> progress;
 

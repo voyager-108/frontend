@@ -16,7 +16,7 @@ class _ProgressPageState extends ConsumerState<ProgressPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.max,
-          children: [FloorTitle(), Expanded(child: ProgressWidget())],
+          children: [FloorTitle(), ProgressWidget()],
         ),
       );
 }

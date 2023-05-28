@@ -52,10 +52,20 @@ const HousePageIsarSchema = CollectionSchema(
       name: r'hasNoProgress',
       type: IsarType.bool,
     ),
-    r'progress': PropertySchema(
+    r'pk': PropertySchema(
       id: 7,
+      name: r'pk',
+      type: IsarType.long,
+    ),
+    r'progress': PropertySchema(
+      id: 8,
       name: r'progress',
       type: IsarType.stringList,
+    ),
+    r'sid': PropertySchema(
+      id: 9,
+      name: r'sid',
+      type: IsarType.long,
     )
   },
   estimateSize: _housePageIsarEstimateSize,
@@ -108,7 +118,9 @@ void _housePageIsarSerialize(
   writer.writeLong(offsets[4], object.floorIndex);
   writer.writeStringList(offsets[5], object.floorsFlats);
   writer.writeBool(offsets[6], object.hasNoProgress);
-  writer.writeStringList(offsets[7], object.progress);
+  writer.writeLong(offsets[7], object.pk);
+  writer.writeStringList(offsets[8], object.progress);
+  writer.writeLong(offsets[9], object.sid);
 }
 
 HousePageIsar _housePageIsarDeserialize(
@@ -123,9 +135,12 @@ HousePageIsar _housePageIsarDeserialize(
   object.flatsLeft = reader.readLong(offsets[2]);
   object.floor = reader.readLong(offsets[3]);
   object.floorIndex = reader.readLong(offsets[4]);
+  object.floorsFlats = reader.readStringList(offsets[5]) ?? [];
   object.hasNoProgress = reader.readBool(offsets[6]);
   object.id = id;
-  object.progress = reader.readStringList(offsets[7]) ?? [];
+  object.pk = reader.readLong(offsets[7]);
+  object.progress = reader.readStringList(offsets[8]) ?? [];
+  object.sid = reader.readLong(offsets[9]);
   return object;
 }
 
@@ -151,7 +166,11 @@ P _housePageIsarDeserializeProp<P>(
     case 6:
       return (reader.readBool(offset)) as P;
     case 7:
+      return (reader.readLong(offset)) as P;
+    case 8:
       return (reader.readStringList(offset) ?? []) as P;
+    case 9:
+      return (reader.readLong(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -775,6 +794,60 @@ extension HousePageIsarQueryFilter
     });
   }
 
+  QueryBuilder<HousePageIsar, HousePageIsar, QAfterFilterCondition> pkEqualTo(
+      int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'pk',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<HousePageIsar, HousePageIsar, QAfterFilterCondition>
+      pkGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'pk',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<HousePageIsar, HousePageIsar, QAfterFilterCondition> pkLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'pk',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<HousePageIsar, HousePageIsar, QAfterFilterCondition> pkBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'pk',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<HousePageIsar, HousePageIsar, QAfterFilterCondition>
       progressElementEqualTo(
     String value, {
@@ -999,6 +1072,60 @@ extension HousePageIsarQueryFilter
       );
     });
   }
+
+  QueryBuilder<HousePageIsar, HousePageIsar, QAfterFilterCondition> sidEqualTo(
+      int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'sid',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<HousePageIsar, HousePageIsar, QAfterFilterCondition>
+      sidGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'sid',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<HousePageIsar, HousePageIsar, QAfterFilterCondition> sidLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'sid',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<HousePageIsar, HousePageIsar, QAfterFilterCondition> sidBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'sid',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
 }
 
 extension HousePageIsarQueryObject
@@ -1084,6 +1211,30 @@ extension HousePageIsarQuerySortBy
       sortByHasNoProgressDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'hasNoProgress', Sort.desc);
+    });
+  }
+
+  QueryBuilder<HousePageIsar, HousePageIsar, QAfterSortBy> sortByPk() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'pk', Sort.asc);
+    });
+  }
+
+  QueryBuilder<HousePageIsar, HousePageIsar, QAfterSortBy> sortByPkDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'pk', Sort.desc);
+    });
+  }
+
+  QueryBuilder<HousePageIsar, HousePageIsar, QAfterSortBy> sortBySid() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'sid', Sort.asc);
+    });
+  }
+
+  QueryBuilder<HousePageIsar, HousePageIsar, QAfterSortBy> sortBySidDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'sid', Sort.desc);
     });
   }
 }
@@ -1179,6 +1330,30 @@ extension HousePageIsarQuerySortThenBy
       return query.addSortBy(r'id', Sort.desc);
     });
   }
+
+  QueryBuilder<HousePageIsar, HousePageIsar, QAfterSortBy> thenByPk() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'pk', Sort.asc);
+    });
+  }
+
+  QueryBuilder<HousePageIsar, HousePageIsar, QAfterSortBy> thenByPkDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'pk', Sort.desc);
+    });
+  }
+
+  QueryBuilder<HousePageIsar, HousePageIsar, QAfterSortBy> thenBySid() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'sid', Sort.asc);
+    });
+  }
+
+  QueryBuilder<HousePageIsar, HousePageIsar, QAfterSortBy> thenBySidDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'sid', Sort.desc);
+    });
+  }
 }
 
 extension HousePageIsarQueryWhereDistinct
@@ -1228,9 +1403,21 @@ extension HousePageIsarQueryWhereDistinct
     });
   }
 
+  QueryBuilder<HousePageIsar, HousePageIsar, QDistinct> distinctByPk() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'pk');
+    });
+  }
+
   QueryBuilder<HousePageIsar, HousePageIsar, QDistinct> distinctByProgress() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'progress');
+    });
+  }
+
+  QueryBuilder<HousePageIsar, HousePageIsar, QDistinct> distinctBySid() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'sid');
     });
   }
 }
@@ -1287,10 +1474,22 @@ extension HousePageIsarQueryProperty
     });
   }
 
+  QueryBuilder<HousePageIsar, int, QQueryOperations> pkProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'pk');
+    });
+  }
+
   QueryBuilder<HousePageIsar, List<String>, QQueryOperations>
       progressProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'progress');
+    });
+  }
+
+  QueryBuilder<HousePageIsar, int, QQueryOperations> sidProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'sid');
     });
   }
 }

@@ -10,35 +10,39 @@ class EmptyProgressWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => Expanded(
-        child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "Здесь будет отображаться прогресс",
-                style: Theme.of(context)
-                    .textTheme
-                    .titleLarge
-                    ?.apply(color: Colors.black87),
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              ElevatedButton(
-                  onPressed: () {
-                    ref
-                        .read(CameraDI.cameraPageControllerProvider)
-                        .startRecording(ref);
-                    Navigator.push(
-                        context,
-                        FadePageRoute(ProviderScope(
-                          parent: ProviderScope.containerOf(context),
-                          child: const CameraPage(),
-                        )));
-                  },
-                  child: const Text("Записать первую квартиру"))
-            ],
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  textAlign: TextAlign.center,
+                  "Здесь будет отображаться прогресс",
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge
+                      ?.apply(color: Colors.black87),
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                ElevatedButton(
+                    onPressed: () {
+                      ref
+                          .read(CameraDI.cameraPageControllerProvider)
+                          .startRecording(ref);
+                      Navigator.push(
+                          context,
+                          FadePageRoute(ProviderScope(
+                            parent: ProviderScope.containerOf(context),
+                            child: const CameraPage(),
+                          )));
+                    },
+                    child: const Text("Записать первую квартиру"))
+              ],
+            ),
           ),
         ),
       );

@@ -10,7 +10,6 @@ class LocationManager {
   PermissionStatus? _permissionGranted;
 
   LocationManager(Ref ref) {
-    dev.log("Initializing the location manager 0");
     init(ref);
   }
 
@@ -34,7 +33,7 @@ class LocationManager {
     }
     _location.onLocationChanged.listen((event) {
       ref.read(DI.locationHistoryProvider).add(event);
-      dev.log("SPEED ${event.speed} AT ${event.time}");
+      dev.log("LAT ${event.latitude}; LON ${event.longitude}");
     });
   }
 }

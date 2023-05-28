@@ -56,5 +56,7 @@
 	<false/>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Needed to get the location while recording videos.</string>
+	<key>NSLocationUsageDescription</key>
+    <string>Needed to get the location while recording videos.</string>
 </dict>
 </plist>

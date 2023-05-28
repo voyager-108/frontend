@@ -1,11 +1,10 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide ModalBottomSheetRoute;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:frontend/camera/view/pages/house_page.dart';
+import 'package:frontend/core/view/house_picking_page.dart';
 import 'package:frontend/core/view/widgets/buildings_list.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../../di.dart';
-import 'dart:developer' as dev;
 
 class MainPage extends ConsumerStatefulWidget {
   const MainPage({super.key});
@@ -30,7 +29,13 @@ class _MainPageState extends ConsumerState<MainPage> {
         Expanded(
           child: FloatingActionButton(
             onPressed: () {
-              ref.read(DI.mainPageController).createTestHouse(ref);
+              showCupertinoModalBottomSheet(
+                  expand: false,
+                  bounce: true,
+                  context: context,
+                  builder: (c) => ProviderScope(
+                      parent: ProviderScope.containerOf(context),
+                      child: const HousePickingPage()));
             },
             child: const Text("Добавить здание"),
           ),

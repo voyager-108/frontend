@@ -1,7 +1,14 @@
-import '../../models/house_progress_model.dart';
+import 'package:location/location.dart';
+
+import '../../models/house_model.dart';
 
 class API {
-  // Future<FloorProgressDone> uploadVideo() async {}
-}
+  Future<List<HouseModel>> getOptionsForLocation(LocationData location) async {
+    return Future.delayed(const Duration(seconds: 3), () {
+      return [];
+    });
+  }
+  // Future<FloorProgressModel> uploadVideo() async {}
 
-class VideoModel {}
+  // Future<void>
+}

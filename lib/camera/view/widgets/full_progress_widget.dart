@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class FullProgressWidget extends StatelessWidget {
   const FullProgressWidget({super.key});
 
+  // TODO make it show the progress too
   @override
   Widget build(BuildContext context) => Expanded(
         child: Center(
@@ -22,8 +23,7 @@ class FullProgressWidget extends StatelessWidget {
               ),
               ElevatedButton(
                   onPressed: () {
-                    // TODO uncomment the thing below
-                    // Navigator.pop(context);
+                    Navigator.pop(context);
                   },
                   child: const Text("На главную"))
             ],
