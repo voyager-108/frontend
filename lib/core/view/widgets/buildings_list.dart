@@ -27,8 +27,9 @@ class BuildingsList extends ConsumerWidget {
             delegate: SliverChildBuilderDelegate(
                 childCount: buildings.length(),
                 (_, i) => ListTile(
-                      title: Text(
-                          "Этаж ${buildings.byIndex(i).house.floor}, квартира ${buildings.byIndex(i).house.flat}"),
+                      title: Text(buildings.byIndex(i).house.buildingName),
+                      subtitle: Text(
+                          "${buildings.byIndex(i).house.sectionNumber} секция / ${buildings.byIndex(i).house.slug}"),
                       onTap: () {
                         ref
                             .read(DI.mainPageController)

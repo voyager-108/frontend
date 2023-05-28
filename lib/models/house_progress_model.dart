@@ -1,22 +1,18 @@
 class FloorProgressModel {
-  int floorNumber;
-  int flatNumber;
+  final int floorNumber;
+  final int flatNumber;
   String? status;
-  AdditionalInfoModel? info;
 
   FloorProgressModel()
       : floorNumber = 0,
         flatNumber = 0;
-  FloorProgressModel.withFlat(this.floorNumber, this.flatNumber);
-  FloorProgressModel.restore(
-      this.floorNumber, this.flatNumber, this.status, this.info);
+  FloorProgressModel.withFlat(this.floorNumber, this.flatNumber, [this.status]);
+  FloorProgressModel.restore(this.floorNumber, this.flatNumber, this.status);
 }
-
-class AdditionalInfoModel {}
 
 class HouseProgressModel {
   List<FloorProgressModel> progress;
 
-  HouseProgressModel() : progress = [];
+  HouseProgressModel() : progress = List.empty(growable: true);
   HouseProgressModel.restore(this.progress);
 }

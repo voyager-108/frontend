@@ -11,6 +11,10 @@ PODS:
     - FlutterMacOS
   - permission_handler_apple (9.0.4):
     - Flutter
+  - sensors_plus (0.0.1):
+    - Flutter
+  - video_compress (0.3.0):
+    - Flutter
 
 DEPENDENCIES:
   - camera_avfoundation (from `.symlinks/plugins/camera_avfoundation/ios`)
@@ -19,6 +23,8 @@ DEPENDENCIES:
   - location (from `.symlinks/plugins/location/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
+  - sensors_plus (from `.symlinks/plugins/sensors_plus/ios`)
+  - video_compress (from `.symlinks/plugins/video_compress/ios`)
 
 EXTERNAL SOURCES:
   camera_avfoundation:
@@ -33,6 +39,10 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
   permission_handler_apple:
     :path: ".symlinks/plugins/permission_handler_apple/ios"
+  sensors_plus:
+    :path: ".symlinks/plugins/sensors_plus/ios"
+  video_compress:
+    :path: ".symlinks/plugins/video_compress/ios"
 
 SPEC CHECKSUMS:
   camera_avfoundation: 3125e8cd1a4387f6f31c6c63abb8a55892a9eeeb
@@ -41,6 +51,8 @@ SPEC CHECKSUMS:
   location: 3a2eed4dd2fab25e7b7baf2a9efefe82b512d740
   path_provider_foundation: eaf5b3e458fc0e5fbb9940fb09980e853fe058b8
   permission_handler_apple: 44366e37eaf29454a1e7b1b7d736c2cceaeb17ce
+  sensors_plus: bda64198ccc7d3ccbb49e6ae17d92f67687bee20
+  video_compress: fce97e4fb1dfd88175aa07d2ffc8a2f297f87fbe
 
 PODFILE CHECKSUM: 3c037f8079ab08039310551750b3e9f3905d3b42
 

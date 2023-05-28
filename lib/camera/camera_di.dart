@@ -8,4 +8,5 @@ class CameraDI {
       StateProvider<PermissionStatus?>((_) => null);
   static final cameraPageControllerProvider =
       Provider((ref) => CameraPageController(ref));
+  static final isCameraMovingTooFast = StateProvider<bool>((_) => false);
 }

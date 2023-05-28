@@ -22,6 +22,9 @@ class HousePageIsar {
   int flatsLeft = 0;
   int pk = -1;
   int sid = -1;
+  String slug = "";
+  String buildingName = "";
+  int sectionNumber = -1;
 
   // HouseProgress
   // the format is "floor|flat|status"
@@ -42,6 +45,9 @@ class HousePageIsar {
     flatsLeft = state.house.flatsLeft;
     pk = state.house.pk;
     sid = state.house.sid;
+    slug = state.house.slug;
+    buildingName = state.house.buildingName;
+    sectionNumber = state.house.sectionNumber;
     progress = state.progress.progress
         .map((e) => "${e.floorNumber}|${e.flatNumber}|${e.status}")
         .toList();
@@ -50,17 +56,28 @@ class HousePageIsar {
   List<FloorModel> _parseFloorsFlats() => floorsFlats.map((e) {
         final v = e.split("|");
         return FloorModel(int.parse(v[0]), int.parse(v[1]));
-      }).toList(growable: false);
+      }).toList();
 
   HouseProgressModel _parseHouseProgress() =>
       HouseProgressModel.restore(progress.map((e) {
         final v = e.split("|");
         return FloorProgressModel.restore(
-            int.parse(v[0]), int.parse(v[1]), v[2], null);
-      }).toList(growable: false));
+            int.parse(v[0]), int.parse(v[1]), v[2]);
+      }).toList());
 
   HousePageState parseHousePageState() => HousePageState.withHouse(
-      HouseModel.restore(pk, sid, _parseFloorsFlats(), floor, flat, flatsLeft,
-          hasNoProgress, buildingCovered, floorIndex),
+      HouseModel.restore(
+          pk,
+          sid,
+          slug,
+          buildingName,
+          sectionNumber,
+          _parseFloorsFlats(),
+          floor,
+          flat,
+          flatsLeft,
+          hasNoProgress,
+          buildingCovered,
+          floorIndex),
       _parseHouseProgress());
 }

@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:frontend/accelerometer/accelerometer_controller.dart';
 import 'package:frontend/camera/presentation/house_page_change_notifier.dart';
 import 'package:frontend/camera/presentation/house_page_controller.dart';
 import 'package:frontend/core/presentation/house_pages_change_notifier.dart';
@@ -30,7 +31,7 @@ class DI {
       ChangeNotifierProvider<HousePagesChangeNotifier>(
           (_) => HousePagesChangeNotifier());
   static final housePageControllerProvider =
-      Provider((ref) => HousePageController());
+      Provider((ref) => HousePageController(ref));
 
   // API
   static final api = Provider<API>((_) => API());
@@ -42,4 +43,8 @@ class DI {
       StateProvider<PermissionStatus?>((_) => null);
   static final availableHousesList =
       StateProvider<List<HouseModel>?>((_) => null);
+
+  // accelerometer
+  static final accelerometerControllerProvider =
+      Provider((ref) => AccelerometerController(ref));
 }

@@ -1,30 +1,43 @@
 class HouseModel {
-  final List<FloorModel> _floorsFlats;
+  List<FloorModel> _floorsFlats = List.empty(growable: false);
   int _floorIndex = 0;
   bool buildingCovered = false;
   bool hasNoProgress = true;
-  int floor;
-  int flat;
-  int flatsLeft;
+  int floor = 0;
+  int flat = 0;
+  int flatsLeft = 1;
 
   // API data
   int pk = -1;
   int sid = -1;
+  String slug = "";
+  String buildingName = "";
+  int sectionNumber = -1;
 
-  HouseModel()
-      : _floorsFlats = [],
-        floor = 0,
-        flat = 0,
-        flatsLeft = 0;
+  HouseModel();
 
-  HouseModel.withFlat(this._floorsFlats, this.pk, this.sid)
+  HouseModel.withFlat(this._floorsFlats, this.pk, this.sid, this.slug,
+      this.buildingName, this.sectionNumber)
       : floor = _floorsFlats[0].floorNumber,
         flat = 0,
         flatsLeft = _floorsFlats[0].flatsAmount;
 
+  HouseModel.noFlat(
+      this.pk, this.sid, this.slug, this.buildingName, this.sectionNumber);
+
+  void initFloorsFlats(List<FloorModel> ff) {
+    _floorsFlats = ff;
+    floor = _floorsFlats[0].floorNumber;
+    flat = 0;
+    flatsLeft = _floorsFlats[0].flatsAmount;
+  }
+
   HouseModel.restore(
       this.pk,
       this.sid,
+      this.slug,
+      this.buildingName,
+      this.sectionNumber,
       this._floorsFlats,
       this.floor,
       this.flat,

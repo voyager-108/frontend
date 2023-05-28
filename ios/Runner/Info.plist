@@ -58,5 +58,7 @@
 	<string>Needed to get the location while recording videos.</string>
 	<key>NSLocationUsageDescription</key>
     <string>Needed to get the location while recording videos.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Needed to record videos of buildings.</string>
 </dict>
 </plist>

@@ -21,33 +21,57 @@ class _CameraPageState extends ConsumerState<CameraPage> {
         child: CircularProgressIndicator(),
       );
     } else {
-      return SafeArea(
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Container(
-              color: Colors.black,
-            ),
-            CameraPreview(ref.read(DI.cameraControllerProvider)!),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const FloorTitle(),
-                const Spacer(),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: ElevatedButton(
-                      onPressed: () {
-                        ref
-                            .read(CameraDI.cameraPageControllerProvider)
-                            .stopRecording();
-                        Navigator.pop(context);
-                      },
-                      child: const Text("Закончить запись квартиры")),
-                )
-              ],
-            )
-          ],
+      return Material(
+        child: SafeArea(
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Container(
+                color: Colors.black,
+              ),
+              CameraPreview(ref.read(DI.cameraControllerProvider)!),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const FloorTitle(),
+                  const Spacer(),
+                  AnimatedOpacity(
+                    opacity: ref.watch(CameraDI.isCameraMovingTooFast) ? 1 : 0,
+                    duration: const Duration(milliseconds: 100),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.warning,
+                          color: Colors.red,
+                        ),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Text(
+                          "Пожалуйста, двигайте телефоном медленнее!",
+                          textAlign: TextAlign.start,
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: ElevatedButton(
+                        onPressed: () {
+                          ref
+                              .read(CameraDI.cameraPageControllerProvider)
+                              .stopRecording();
+                          Navigator.pop(context);
+                        },
+                        child: const Text("Закончить запись квартиры")),
+                  )
+                ],
+              )
+            ],
+          ),
         ),
       );
     }

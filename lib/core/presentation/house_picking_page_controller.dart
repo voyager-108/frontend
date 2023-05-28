@@ -27,11 +27,15 @@ class HousePickingPageController {
   }
 
   void getOptions(LocationData location) async {
-    // ref.invalidate(provider)
-    // go to the API
     final api = _ref.read(DI.api);
     final options = await api.getOptionsForLocation(location);
     _ref.read(DI.availableHousesList.notifier).state = options;
+    // try {
+    //   final options = await api.getOptionsForLocation(location);
+    //   _ref.read(DI.availableHousesList.notifier).state = options;
+    // } catch (e) {
+    //   dev.log("Couldn't load the data $e");
+    // }
   }
 
   void openHouse(HouseModel e) {

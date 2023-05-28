@@ -23,6 +23,9 @@ class _HousePageState extends ConsumerState<HousePage> {
   void initState() {
     cameraController = ref.read(CameraDI.cameraPageControllerProvider);
     housePageController = ref.read(DI.housePageControllerProvider);
+    housePageController.loadFloorsFlats();
+    housePageController.setFloor();
+    ref.read(DI.accelerometerControllerProvider);
     cameraController.initCamera();
     super.initState();
   }
@@ -30,7 +33,7 @@ class _HousePageState extends ConsumerState<HousePage> {
   @override
   void deactivate() {
     cameraController.dispose(ref);
-    housePageController.dispose(ref);
+    housePageController.dispose();
     super.deactivate();
   }
 
@@ -93,6 +96,11 @@ class _HousePageState extends ConsumerState<HousePage> {
                 ),
               ]),
         ),
+      );
+    }
+    if (!ref.watch(DI.housePageState).areFloorsFlatsSet) {
+      return const Center(
+        child: CircularProgressIndicator(),
       );
     }
     return const ProgressPage();
