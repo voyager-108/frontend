@@ -11,18 +11,19 @@ class HousePagesChangeNotifier extends ChangeNotifier {
 
   HousePageState byIndex(int i) => _state[i];
 
-  HousePageState? byHouseModel(HouseModel hm) {
-    for (final s in _state) {
+  int? byHouseModel(HouseModel hm) {
+    for (final (i, s) in _state.indexed) {
       if (s.house.sid == hm.sid) {
-        return s;
+        return i;
       }
     }
     return null;
   }
 
-  void add(HousePageState newState) {
+  int add(HousePageState newState) {
     _state.add(newState);
     notifyListeners();
+    return _state.length - 1;
   }
 
   void setState(List<HousePageState> newState) {

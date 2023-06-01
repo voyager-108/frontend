@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -51,12 +52,17 @@ class CameraPageController {
 
   void stopRecording() async {
     if (!isRecording) return;
-    final floor = _ref.read(DI.housePageState).currentFloor();
-    final flat = _ref.read(DI.housePageState).currentFlat();
+    if (_ref.read(DI.housePageState).getState() == null) {
+      isRecording = false;
+      cameraController!.stopVideoRecording();
+      return;
+    }
+    final floor = _ref.read(DI.housePageState).currentFloor()!;
+    final flat = _ref.read(DI.housePageState).currentFlat()!;
     _ref.read(DI.housePageState.notifier).stopRecording();
     final pIndex = _ref
         .read(DI.housePageState.notifier)
-        .addProgress(FloorProgressModel.withFlat(floor, flat, "Сохранение"));
+        .addProgress(FloorProgressModel.withFlat(floor, flat, "Сохранение"))!;
     dev.log("Stopped recording the video");
     final file = await cameraController!.stopVideoRecording();
     isRecording = false;
@@ -65,12 +71,21 @@ class CameraPageController {
     final compressedVideo = await VideoCompress.compressVideo(file.path,
         includeAudio: false, frameRate: 3);
     _ref.read(DI.housePageState.notifier).updateProgress(pIndex, "Обработка");
-    // if (compressedVideo == null) {
-    //   _ref.read(DI.api).uploadVideo(File(file.path), locations);
-    // } else {
-    //   _ref.read(DI.api).uploadVideo(compressedVideo.file, locations);
-    // }
-    // TODO API call
-    _ref.read(DI.housePageState.notifier).updateProgress(pIndex, "Проценты");
+    try {
+      int percent = 0;
+      if (compressedVideo == null) {
+        percent =
+            await _ref.read(DI.api).uploadVideo(File(file.path), locations);
+      } else {
+        percent = await _ref
+            .read(DI.api)
+            .uploadVideo(compressedVideo.file!, locations);
+      }
+      _ref.read(DI.housePageState.notifier).updateProgress(pIndex, "$percent%");
+    } catch (e) {
+      _ref
+          .read(DI.housePageState.notifier)
+          .updateProgress(pIndex, "Не удалось проанализировать видео");
+    }
   }
 }

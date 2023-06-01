@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../camera/view/pages/house_page.dart';
 import '../../../di.dart';
-import 'dart:developer' as dev;
 
 class BuildingsList extends ConsumerWidget {
   const BuildingsList({super.key});
@@ -29,11 +28,11 @@ class BuildingsList extends ConsumerWidget {
                 (_, i) => ListTile(
                       title: Text(buildings.byIndex(i).house.buildingName),
                       subtitle: Text(
-                          "${buildings.byIndex(i).house.sectionNumber} секция / ${buildings.byIndex(i).house.slug}"),
+                          "${buildings.byIndex(i).house.sectionNumber} секция"),
                       onTap: () {
                         ref
                             .read(DI.mainPageController)
-                            .setHouse(buildings.byIndex(i));
+                            .setHouse(i, true, false);
                         Navigator.push(
                             context,
                             MaterialPageRoute(

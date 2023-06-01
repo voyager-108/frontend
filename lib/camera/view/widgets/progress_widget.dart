@@ -14,10 +14,15 @@ class ProgressWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    if (ref.watch(DI.housePageState).hasNoProgress()) {
+    if (!ref.watch(DI.housePageState).hasState()) {
+      return const Center(
+        child: Text("Erro"),
+      );
+    }
+    if (ref.watch(DI.housePageState).hasNoProgress()!) {
       // show you have no progress
       return const EmptyProgressWidget();
-    } else if (ref.watch(DI.housePageState).isBuildingCovered()) {
+    } else if (ref.watch(DI.housePageState).isBuildingCovered()!) {
       // show the building is fully covered
       return const FullProgressWidget();
     }

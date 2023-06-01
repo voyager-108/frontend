@@ -7,6 +7,7 @@ import 'package:permission_handler/permission_handler.dart';
 import '../../../di.dart';
 import '../../camera_di.dart';
 import '../../presentation/camera_page_controller.dart';
+import 'dart:developer' as dev;
 
 class HousePage extends ConsumerStatefulWidget {
   const HousePage({Key? key}) : super(key: key);
@@ -25,7 +26,6 @@ class _HousePageState extends ConsumerState<HousePage> {
     housePageController = ref.read(DI.housePageControllerProvider);
     housePageController.loadFloorsFlats();
     housePageController.setFloor();
-    ref.read(DI.accelerometerControllerProvider);
     cameraController.initCamera();
     super.initState();
   }
@@ -99,6 +99,7 @@ class _HousePageState extends ConsumerState<HousePage> {
       );
     }
     if (!ref.watch(DI.housePageState).areFloorsFlatsSet) {
+      dev.log("Waiting for the floors/flats to be set");
       return const Center(
         child: CircularProgressIndicator(),
       );

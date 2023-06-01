@@ -15,8 +15,6 @@ class HousePickingPageController {
   HousePickingPageController(this._ref);
 
   void init() async {
-    // make the location manager work by accessing it the first time
-    _ref.read(DI.locationManagerProvider);
     updatePermissionStatus();
   }
 
@@ -28,25 +26,25 @@ class HousePickingPageController {
 
   void getOptions(LocationData location) async {
     final api = _ref.read(DI.api);
-    final options = await api.getOptionsForLocation(location);
-    _ref.read(DI.availableHousesList.notifier).state = options;
-    // try {
-    //   final options = await api.getOptionsForLocation(location);
-    //   _ref.read(DI.availableHousesList.notifier).state = options;
-    // } catch (e) {
-    //   dev.log("Couldn't load the data $e");
-    // }
+    try {
+      final options = await api.getOptionsForLocation(location);
+      _ref.read(DI.availableHousesList.notifier).state = options;
+    } catch (e) {
+      dev.log("Couldn't load the data $e");
+    }
   }
 
   void openHouse(HouseModel e) {
     final possibleExistingOption =
         _ref.read(DI.housePagesChangeNotifier).byHouseModel(e);
-    if (possibleExistingOption == null) {
-      final pageState = HousePageState.withHouse(e, HouseProgressModel());
-      _ref.read(DI.mainPageController).setHouse(pageState);
-      _ref.read(DI.housePagesChangeNotifier).add(pageState);
-    } else {
-      _ref.read(DI.mainPageController).setHouse(possibleExistingOption);
+    if (possibleExistingOption != null) {
+      _ref
+          .read(DI.mainPageController)
+          .setHouse(possibleExistingOption, true, false);
+      return;
     }
+    final pageState = HousePageState.withHouse(e, HouseProgressModel());
+    final index = _ref.read(DI.housePagesChangeNotifier).add(pageState);
+    _ref.read(DI.mainPageController).setHouse(index, false, true);
   }
 }

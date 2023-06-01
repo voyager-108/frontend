@@ -60,7 +60,7 @@ class _HousePickingListState extends ConsumerState {
           children: options
               .map((e) => ListTile(
                     title: Text(e.buildingName),
-                    subtitle: Text("${e.sectionNumber} секция / ${e.slug}"),
+                    subtitle: Text("${e.sectionNumber} секция"),
                     onTap: () {
                       ref
                           .read(DI.housePickingPageControllerProvider)

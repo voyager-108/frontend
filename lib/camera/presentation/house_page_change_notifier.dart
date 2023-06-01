@@ -1,64 +1,133 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/camera/presentation/house_page_state.dart';
 
+import '../../di.dart';
 import '../../models/house_model.dart';
 import '../../models/house_progress_model.dart';
 
 class HousePageChangeNotifier extends ChangeNotifier {
-  HousePageState _state = HousePageState.withHouse(
-      HouseModel.withFlat([
-        FloorModel(1, 4),
-        FloorModel(2, 3),
-      ], -1, -1, "", "", -1),
-      HouseProgressModel());
-
-  HousePageState getState() => _state;
-
+  int? _index;
+  final Ref _ref;
+  HousePageChangeNotifier(this._ref);
   bool areFloorsFlatsSet = true;
-  bool isRecording() => _state.isRecording;
-  bool hasNoProgress() => _state.house.hasNoProgress;
-  bool isBuildingCovered() => _state.house.buildingCovered;
-  int currentFloor() => _state.house.floor;
-  int currentFlat() => _state.house.flat;
-  int currentFlatsLeft() => _state.house.flatsLeft;
-  int progressLength() => _state.progress.progress.length;
-  FloorProgressModel progressElement(int index) =>
-      _state.progress.progress[index];
+  bool? isNew;
+
+  HousePageState? _state() => _index == null
+      ? null
+      : _ref.read(DI.housePagesChangeNotifier).byIndex(_index!);
+
+  HousePageState? getState() => _state();
+  bool hasState() => _state() != null;
+
+  void init(int newIndex, bool floorsFlatsSet, bool isNew) {
+    _index = newIndex;
+    areFloorsFlatsSet = floorsFlatsSet;
+    this.isNew = isNew;
+    notifyListeners();
+  }
+
+  bool? isRecording() {
+    final s = _state();
+    if (s == null) return null;
+    return s.isRecording;
+  }
+
+  bool? hasNoProgress() {
+    final s = _state();
+    if (s == null) return null;
+    return s.house.hasNoProgress;
+  }
+
+  bool? isBuildingCovered() {
+    final s = _state();
+    if (s == null) return null;
+    return s.house.buildingCovered;
+  }
+
+  int? currentFloor() {
+    final s = _state();
+    if (s == null) return null;
+    return s.house.floor;
+  }
+
+  int? currentFlat() {
+    final s = _state();
+    if (s == null) return null;
+    return s.house.flat;
+  }
+
+  int? currentFlatsLeft() {
+    final s = _state();
+    if (s == null) return null;
+    return s.house.flatsLeft;
+  }
+
+  int? progressLength() {
+    final s = _state();
+    if (s == null) return null;
+    return s.progress.progress.length;
+  }
+
+  FloorProgressModel? progressElement(int index) {
+    final s = _state();
+    if (s == null) return null;
+    return s.progress.progress[index];
+  }
 
   void startRecording() {
-    _state.house.startFlatRecording();
-    _state.isRecording = true;
+    final s = _state();
+    if (s == null) return;
+    s.house.startFlatRecording();
+    s.isRecording = true;
     notifyListeners();
   }
 
   void stopRecording() {
-    _state.house.endFlatRecording();
-    _state.isRecording = false;
+    final s = _state();
+    if (s == null) return;
+    s.house.endFlatRecording();
+    s.isRecording = false;
     notifyListeners();
   }
 
   void setFloorsFlats(List<FloorModel> ff) {
-    _state.house.initFloorsFlats(ff);
+    final s = _state();
+    if (s == null) return;
+    s.house.initFloorsFlats(ff);
     areFloorsFlatsSet = true;
     notifyListeners();
   }
 
-  int addProgress(FloorProgressModel newProgress) {
-    _state.progress.progress.add(newProgress);
+  int? addProgress(FloorProgressModel newProgress) {
+    final s = _state();
+    if (s == null) return null;
+    s.progress.progress.add(newProgress);
     notifyListeners();
-    return _state.progress.progress.length - 1;
+    return s.progress.progress.length - 1;
   }
 
-  void updateProgress(int pIndex, [String? status]) {
+  void updateProgress(int pIndex, String? status) {
+    final s = _state();
+    if (s == null) return;
     if (status != null) {
-      _state.progress.progress[pIndex].status = status;
+      s.progress.progress[pIndex].status = status;
     }
     notifyListeners();
   }
 
-  void init(HousePageState newState) {
-    _state = newState;
-    areFloorsFlatsSet = _state.house.getFloorsFlats().isEmpty;
-    notifyListeners();
+  List<List<String?>> formProgressGrid() {
+    final s = _state();
+    if (s == null) return [[]];
+    final floorsFlats = s.house.getFloorsFlats();
+    final progressList = List.generate(floorsFlats.length,
+        (i) => List<String?>.generate(floorsFlats[i].flatsAmount, (j) => null));
+    final firstFloorNumber = floorsFlats[0].floorNumber;
+    for (final p in s.progress.progress) {
+      final floorIndex =
+          progressList.length - 1 - (p.floorNumber - firstFloorNumber);
+      progressList[floorIndex][p.flatNumber - 1] = p.status;
+    }
+    return progressList;
   }
 }

@@ -1,0 +1,1 @@
+enum ProgressViewType { list, grid }

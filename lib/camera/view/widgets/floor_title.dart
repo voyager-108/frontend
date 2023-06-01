@@ -15,7 +15,7 @@ class _FloorTitleState extends ConsumerState<FloorTitle> {
 
   @override
   Widget build(BuildContext context) {
-    lightTheme = !ref.watch(DI.housePageState).isRecording();
+    lightTheme = !(ref.watch(DI.housePageState).isRecording() ?? false);
     return Container(
       decoration: lightTheme
           ? const BoxDecoration()

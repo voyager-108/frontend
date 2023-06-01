@@ -6,6 +6,7 @@ import 'package:frontend/camera/presentation/house_page_controller.dart';
 import 'package:frontend/core/presentation/house_pages_change_notifier.dart';
 import 'package:frontend/core/presentation/house_picking_page_controller.dart';
 import 'package:frontend/core/presentation/main_page_controller.dart';
+import 'package:frontend/core/presentation/progress_view_type.dart';
 import 'package:frontend/persistence/storage.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -22,7 +23,7 @@ class DI {
   static final locationManagerProvider =
       Provider((ref) => LocationManager(ref));
   static final housePageState = ChangeNotifierProvider<HousePageChangeNotifier>(
-      (_) => HousePageChangeNotifier());
+      (ref) => HousePageChangeNotifier(ref));
 
   static final storageProvider = Provider<Storage>((_) => Storage());
   static final mainPageController =
@@ -32,6 +33,9 @@ class DI {
           (_) => HousePagesChangeNotifier());
   static final housePageControllerProvider =
       Provider((ref) => HousePageController(ref));
+
+  // progress view type
+  static final progressViewType = StateProvider((_) => ProgressViewType.list);
 
   // API
   static final api = Provider<API>((_) => API());

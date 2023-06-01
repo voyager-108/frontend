@@ -4,14 +4,18 @@ import 'package:frontend/persistence/house_page_isar.dart';
 import '../../di.dart';
 
 class HousePageController {
-  Ref _ref;
+  final Ref _ref;
 
   HousePageController(this._ref);
 
-  void loadFloorsFlats() {
-    // TODO get the exact amount of floors and flats from the API
-    // final floorsFlats = _ref.read(DI.api).
-    // _ref.read(DI.housePageState).setFloorsFlats(floorsFlats);
+  void loadFloorsFlats() async {
+    final house = _ref.read(DI.housePageState).getState()?.house;
+    if (house == null) return;
+    if (_ref.read(DI.housePageState).areFloorsFlatsSet) return;
+    final floorsFlats = await _ref
+        .read(DI.api)
+        .getHouseFloorsFlats(house.slug, house.pk, house.sid);
+    _ref.read(DI.housePageState).setFloorsFlats(floorsFlats);
   }
 
   void setFloor() {
@@ -20,10 +24,11 @@ class HousePageController {
   }
 
   void dispose() {
-    _ref.read(DI.storageProvider).save(HousePageIsar.fromHousePageState(
-        _ref.read(DI.housePageState).getState()));
-    _ref
-        .read(DI.housePagesChangeNotifier)
-        .update(_ref.read(DI.housePageState).getState());
+    final s = _ref.read(DI.housePageState).getState();
+    if (s == null) return;
+    if (_ref.read(DI.housePageState).isNew ?? false) {
+      _ref.read(DI.storageProvider).save(HousePageIsar.fromHousePageState(s));
+    }
+    _ref.read(DI.housePagesChangeNotifier).update(s);
   }
 }
