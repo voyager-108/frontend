@@ -19,16 +19,25 @@ class HousePageController {
   }
 
   void setFloor() {
+    final house = _ref.read(DI.housePageState).getState()?.house;
+    if (house == null) return;
+    if (!(_ref.read(DI.housePageState).isNew ?? false)) return;
     final location = _ref.read(DI.locationHistoryProvider).getLocation()!;
     _ref.read(DI.api).setFloor("${location.altitude}");
   }
 
-  void dispose() {
+  Future<void> dispose() async {
     final s = _ref.read(DI.housePageState).getState();
     if (s == null) return;
     if (_ref.read(DI.housePageState).isNew ?? false) {
+      final newId = await _ref
+          .read(DI.storageProvider)
+          .save(HousePageIsar.fromHousePageState(s));
+      if (newId != null) {
+        _ref.read(DI.housePageState).setStateId(newId);
+      }
+    } else {
       _ref.read(DI.storageProvider).save(HousePageIsar.fromHousePageState(s));
     }
-    _ref.read(DI.housePagesChangeNotifier).update(s);
   }
 }

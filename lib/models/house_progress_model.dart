@@ -1,13 +1,16 @@
+import '../core/presentation/progress_video_state.dart';
+
 class FloorProgressModel {
   final int floorNumber;
   final int flatNumber;
   String? status;
+  ProcessedVideoState statusState = ProcessedVideoState.none;
 
-  FloorProgressModel()
-      : floorNumber = 0,
-        flatNumber = 0;
-  FloorProgressModel.withFlat(this.floorNumber, this.flatNumber, [this.status]);
-  FloorProgressModel.restore(this.floorNumber, this.flatNumber, this.status);
+  FloorProgressModel.withFlat(
+      this.floorNumber, this.flatNumber, this.statusState,
+      [this.status]);
+  FloorProgressModel.restore(
+      this.floorNumber, this.flatNumber, this.status, this.statusState);
 }
 
 class HouseProgressModel {

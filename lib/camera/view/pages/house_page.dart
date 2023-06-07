@@ -101,7 +101,21 @@ class _HousePageState extends ConsumerState<HousePage> {
     if (!ref.watch(DI.housePageState).areFloorsFlatsSet) {
       dev.log("Waiting for the floors/flats to be set");
       return const Center(
-        child: CircularProgressIndicator(),
+        child: Material(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Загружаем данные об объекте",
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(
+                height: 16.0,
+              ),
+              CircularProgressIndicator(),
+            ],
+          ),
+        ),
       );
     }
     return const ProgressPage();

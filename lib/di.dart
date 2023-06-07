@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/accelerometer/accelerometer_controller.dart';
 import 'package:frontend/camera/presentation/house_page_change_notifier.dart';
@@ -35,7 +36,7 @@ class DI {
       Provider((ref) => HousePageController(ref));
 
   // progress view type
-  static final progressViewType = StateProvider((_) => ProgressViewType.list);
+  static final progressViewType = StateProvider((_) => ProgressViewType.grid);
 
   // API
   static final api = Provider<API>((_) => API());
@@ -51,4 +52,10 @@ class DI {
   // accelerometer
   static final accelerometerControllerProvider =
       Provider((ref) => AccelerometerController(ref));
+
+  // progress list scroll controller
+  static final verticalScrollController = Provider((ref) => ScrollController());
+  static final gridScrollController = Provider((ref) => ScrollController());
+  static final horizontalScrollController =
+      Provider((ref) => ScrollController());
 }

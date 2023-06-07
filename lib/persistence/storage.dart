@@ -1,6 +1,7 @@
 import 'package:frontend/persistence/house_page_isar.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
+import 'dart:developer' as dev;
 
 class Storage {
   Isar? isar;
@@ -19,10 +20,14 @@ class Storage {
         () async => await isar!.collection<HousePageIsar>().where().findAll());
   }
 
-  void save(HousePageIsar s) async {
-    if (isar == null) return;
+  Future<int?> save(HousePageIsar s) async {
+    if (isar == null) return null;
+    dev.log("STATE ID: ${s.id}");
+    int? newId;
     await isar!.writeTxn(() async {
-      await isar!.collection<HousePageIsar>().put(s);
+      newId = await isar!.collection<HousePageIsar>().put(s);
+      dev.log("NEW ID STORED: $newId");
     });
+    return newId;
   }
 }

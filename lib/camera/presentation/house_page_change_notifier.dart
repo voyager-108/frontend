@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/camera/presentation/house_page_state.dart';
 
+import '../../core/presentation/progress_video_state.dart';
 import '../../di.dart';
 import '../../models/house_model.dart';
 import '../../models/house_progress_model.dart';
+import '../../models/pair.dart';
 
 class HousePageChangeNotifier extends ChangeNotifier {
   int? _index;
@@ -19,6 +21,12 @@ class HousePageChangeNotifier extends ChangeNotifier {
 
   HousePageState? getState() => _state();
   bool hasState() => _state() != null;
+
+  void setStateId(int id) {
+    final s = _state();
+    if (s == null) return;
+    s.id = id;
+  }
 
   void init(int newIndex, bool floorsFlatsSet, bool isNew) {
     _index = newIndex;
@@ -75,6 +83,13 @@ class HousePageChangeNotifier extends ChangeNotifier {
     return s.progress.progress[index];
   }
 
+  void moveNextFloor() {
+    final s = _state();
+    if (s == null) return;
+    s.house.moveNextFloor();
+    notifyListeners();
+  }
+
   void startRecording() {
     final s = _state();
     if (s == null) return;
@@ -107,26 +122,31 @@ class HousePageChangeNotifier extends ChangeNotifier {
     return s.progress.progress.length - 1;
   }
 
-  void updateProgress(int pIndex, String? status) {
+  void updateProgress(
+      int pIndex, ProcessedVideoState statusState, String? status) {
     final s = _state();
     if (s == null) return;
     if (status != null) {
       s.progress.progress[pIndex].status = status;
     }
+    s.progress.progress[pIndex].statusState = statusState;
     notifyListeners();
   }
 
-  List<List<String?>> formProgressGrid() {
+  List<List<Pair<String?, ProcessedVideoState>>> formProgressGrid() {
     final s = _state();
     if (s == null) return [[]];
     final floorsFlats = s.house.getFloorsFlats();
-    final progressList = List.generate(floorsFlats.length,
-        (i) => List<String?>.generate(floorsFlats[i].flatsAmount, (j) => null));
+    final progressList = List.generate(
+        floorsFlats.length,
+        (i) => List<Pair<String?, ProcessedVideoState>>.generate(
+            floorsFlats[i].flatsAmount,
+            (j) => Pair(null, ProcessedVideoState.none)));
     final firstFloorNumber = floorsFlats[0].floorNumber;
     for (final p in s.progress.progress) {
       final floorIndex =
           progressList.length - 1 - (p.floorNumber - firstFloorNumber);
-      progressList[floorIndex][p.flatNumber - 1] = p.status;
+      progressList[floorIndex][p.flatNumber - 1].set(p.status, p.statusState);
     }
     return progressList;
   }

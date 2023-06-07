@@ -31,15 +31,15 @@ class HousePagesChangeNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  void update(HousePageState state) {
-    for (final (i, s) in _state.indexed) {
-      if (s.id == state.id) {
-        _state[i] = state;
-        notifyListeners();
-        return;
-      }
-    }
-  }
+  // void update(HousePageState state) {
+  //   for (final (i, s) in _state.indexed) {
+  //     if (s.id == state.id) {
+  //       _state[i] = state;
+  //       notifyListeners();
+  //       return;
+  //     }
+  //   }
+  // }
 
   List<HousePageState> getState() => _state;
 }

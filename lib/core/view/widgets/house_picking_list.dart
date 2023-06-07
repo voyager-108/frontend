@@ -27,7 +27,21 @@ class _HousePickingListState extends ConsumerState {
     final options = ref.watch(DI.availableHousesList);
     if (options == null) {
       return const Center(
-        child: CircularProgressIndicator(),
+        child: Material(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Подгружаем ближайшие объекты",
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(
+                height: 16.0,
+              ),
+              CircularProgressIndicator(),
+            ],
+          ),
+        ),
       );
     }
     if (options.isEmpty) {

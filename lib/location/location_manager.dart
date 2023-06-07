@@ -33,7 +33,7 @@ class LocationManager {
     }
     _location.onLocationChanged.listen((event) {
       ref.read(DI.locationHistoryProvider).add(event);
-      dev.log("LAT ${event.latitude}; LON ${event.longitude}");
+      // dev.log("LAT ${event.latitude}; LON ${event.longitude}");
     });
   }
 }

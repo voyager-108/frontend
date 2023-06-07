@@ -4,6 +4,7 @@ import 'package:frontend/camera/presentation/house_page_state.dart';
 import 'package:frontend/models/house_progress_model.dart';
 import 'package:isar/isar.dart';
 
+import '../core/presentation/progress_video_state.dart';
 import '../models/house_model.dart';
 
 part 'house_page_isar.g.dart';
@@ -11,7 +12,7 @@ part 'house_page_isar.g.dart';
 @collection
 class HousePageIsar {
   // HouseModel
-  Id id = Isar.autoIncrement;
+  Id id;
   // the format is "floor|flat", thus 2|3
   List<String> floorsFlats = [];
   int floorIndex = 0;
@@ -27,12 +28,12 @@ class HousePageIsar {
   int sectionNumber = -1;
 
   // HouseProgress
-  // the format is "floor|flat|status"
+  // the format is "floor|flat|status|statusState"
   List<String> progress = [];
 
-  HousePageIsar();
+  HousePageIsar() : id = Isar.autoIncrement;
 
-  HousePageIsar.fromHousePageState(HousePageState state) {
+  HousePageIsar.fromHousePageState(HousePageState state) : id = state.id {
     floorsFlats = state.house
         .getFloorsFlats()
         .map((e) => "${e.floorNumber}|${e.flatsAmount}")
@@ -49,7 +50,8 @@ class HousePageIsar {
     buildingName = state.house.buildingName;
     sectionNumber = state.house.sectionNumber;
     progress = state.progress.progress
-        .map((e) => "${e.floorNumber}|${e.flatNumber}|${e.status}")
+        .map((e) =>
+            "${e.floorNumber}|${e.flatNumber}|${e.status}|${e.statusState.toString()}")
         .toList();
   }
 
@@ -61,11 +63,11 @@ class HousePageIsar {
   HouseProgressModel _parseHouseProgress() =>
       HouseProgressModel.restore(progress.map((e) {
         final v = e.split("|");
-        return FloorProgressModel.restore(
-            int.parse(v[0]), int.parse(v[1]), v[2]);
+        return FloorProgressModel.restore(int.parse(v[0]), int.parse(v[1]),
+            v[2], ProcessedVideoState.parse(v[3]));
       }).toList());
 
-  HousePageState parseHousePageState() => HousePageState.withHouse(
+  HousePageState parseHousePageState() => HousePageState(
       HouseModel.restore(
           pk,
           sid,
@@ -79,5 +81,6 @@ class HousePageIsar {
           hasNoProgress,
           buildingCovered,
           floorIndex),
-      _parseHouseProgress());
+      _parseHouseProgress(),
+      id);
 }

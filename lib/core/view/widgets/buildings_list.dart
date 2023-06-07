@@ -23,26 +23,25 @@ class BuildingsList extends ConsumerWidget {
           title: const Text('История'),
         ),
         SliverList(
-            delegate: SliverChildBuilderDelegate(
-                childCount: buildings.length(),
-                (_, i) => ListTile(
-                      title: Text(buildings.byIndex(i).house.buildingName),
-                      subtitle: Text(
-                          "${buildings.byIndex(i).house.sectionNumber} секция"),
-                      onTap: () {
-                        ref
-                            .read(DI.mainPageController)
-                            .setHouse(i, true, false);
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => Scaffold(
-                                    body: ProviderScope(
-                                        parent:
-                                            ProviderScope.containerOf(context),
-                                        child: const HousePage()))));
-                      },
-                    ))),
+            delegate: SliverChildBuilderDelegate(childCount: buildings.length(),
+                (_, index) {
+          final i = buildings.length() - index - 1;
+          return ListTile(
+            title: Text(buildings.byIndex(i).house.buildingName),
+            subtitle:
+                Text("${buildings.byIndex(i).house.sectionNumber} секция"),
+            onTap: () {
+              ref.read(DI.mainPageController).setHouse(i, true, false);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => Scaffold(
+                          body: ProviderScope(
+                              parent: ProviderScope.containerOf(context),
+                              child: const HousePage()))));
+            },
+          );
+        })),
       ],
     );
   }

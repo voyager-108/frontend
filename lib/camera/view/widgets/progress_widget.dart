@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/camera/view/widgets/empty_progress_widget.dart';
-import 'package:frontend/camera/view/widgets/full_progress_widget.dart';
 import 'package:frontend/camera/view/widgets/progress_list.dart';
+import 'package:frontend/camera/view/widgets/progress_widget_actions.dart';
 
-import '../../../core/view/fade_page_route.dart';
 import '../../../di.dart';
-import '../../camera_di.dart';
-import '../pages/camera_page.dart';
 
 class ProgressWidget extends ConsumerWidget {
   const ProgressWidget({super.key});
@@ -16,15 +13,12 @@ class ProgressWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     if (!ref.watch(DI.housePageState).hasState()) {
       return const Center(
-        child: Text("Erro"),
+        child: Text("Unexpected Error"),
       );
     }
     if (ref.watch(DI.housePageState).hasNoProgress()!) {
       // show you have no progress
       return const EmptyProgressWidget();
-    } else if (ref.watch(DI.housePageState).isBuildingCovered()!) {
-      // show the building is fully covered
-      return const FullProgressWidget();
     }
     return Expanded(
       child: Column(
@@ -41,25 +35,11 @@ class ProgressWidget extends ConsumerWidget {
                   ?.apply(color: Colors.black87),
             ),
           ),
-          const Expanded(
-            child: ProgressList(),
-          ),
-          const Spacer(),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ElevatedButton(
-                onPressed: () {
-                  ref
-                      .read(CameraDI.cameraPageControllerProvider)
-                      .startRecording();
-                  Navigator.push(
-                      context,
-                      FadePageRoute(ProviderScope(
-                        parent: ProviderScope.containerOf(context),
-                        child: const CameraPage(),
-                      )));
-                },
-                child: const Text("Записать следующую квартиру")),
+          const ProgressList(),
+          const Padding(
+            padding: EdgeInsets.only(
+                left: 16.0, right: 16.0, bottom: 16.0, top: 8.0),
+            child: ProgressWidgetActions(),
           )
         ],
       ),

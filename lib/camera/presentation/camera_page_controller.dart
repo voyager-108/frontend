@@ -8,6 +8,7 @@ import 'package:frontend/models/house_progress_model.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:video_compress/video_compress.dart';
 
+import '../../core/presentation/progress_video_state.dart';
 import '../camera_di.dart';
 import 'dart:developer' as dev;
 
@@ -15,7 +16,7 @@ class CameraPageController {
   final Ref _ref;
   bool isRecording = false;
   CameraController? cameraController;
-  static const int splitPeriod = 5;
+  static const int splitPeriod = 2;
 
   CameraPageController(this._ref);
 
@@ -43,7 +44,7 @@ class CameraPageController {
   void startRecording() async {
     if (isRecording) return;
     dev.log("Started recording a new video");
-    _ref.read(DI.housePageState.notifier).startRecording();
+    _ref.read(DI.housePageState).startRecording();
     _ref.read(DI.locationHistoryProvider).startRecording();
     cameraController!.prepareForVideoRecording();
     cameraController!.startVideoRecording();
@@ -60,17 +61,20 @@ class CameraPageController {
     final floor = _ref.read(DI.housePageState).currentFloor()!;
     final flat = _ref.read(DI.housePageState).currentFlat()!;
     _ref.read(DI.housePageState.notifier).stopRecording();
-    final pIndex = _ref
-        .read(DI.housePageState.notifier)
-        .addProgress(FloorProgressModel.withFlat(floor, flat, "Сохранение"))!;
+    final pIndex = _ref.read(DI.housePageState.notifier).addProgress(
+        FloorProgressModel.withFlat(
+            floor, flat, ProcessedVideoState.save, "Сохранение"))!;
     dev.log("Stopped recording the video");
     final file = await cameraController!.stopVideoRecording();
     isRecording = false;
     final locations = _ref.read(DI.locationHistoryProvider).stopRecording();
-    _ref.read(DI.housePageState.notifier).updateProgress(pIndex, "Сжатие");
+    _ref
+        .read(DI.housePageState.notifier)
+        .updateProgress(pIndex, ProcessedVideoState.compress, "Сжатие");
     final compressedVideo = await VideoCompress.compressVideo(file.path,
         includeAudio: false, frameRate: 3);
-    _ref.read(DI.housePageState.notifier).updateProgress(pIndex, "Обработка");
+    _ref.read(DI.housePageState.notifier).updateProgress(
+        pIndex, ProcessedVideoState.upload, "Загрузка и обработка");
     try {
       int percent = 0;
       if (compressedVideo == null) {
@@ -81,11 +85,12 @@ class CameraPageController {
             .read(DI.api)
             .uploadVideo(compressedVideo.file!, locations);
       }
-      _ref.read(DI.housePageState.notifier).updateProgress(pIndex, "$percent%");
-    } catch (e) {
       _ref
           .read(DI.housePageState.notifier)
-          .updateProgress(pIndex, "Не удалось проанализировать видео");
+          .updateProgress(pIndex, ProcessedVideoState.result, "$percent%");
+    } catch (e) {
+      _ref.read(DI.housePageState.notifier).updateProgress(
+          pIndex, ProcessedVideoState.error, "Не удалось выгрузить видео");
     }
   }
 }

@@ -43,7 +43,7 @@ class HousePickingPageController {
           .setHouse(possibleExistingOption, true, false);
       return;
     }
-    final pageState = HousePageState.withHouse(e, HouseProgressModel());
+    final pageState = HousePageState(e, HouseProgressModel());
     final index = _ref.read(DI.housePagesChangeNotifier).add(pageState);
     _ref.read(DI.mainPageController).setHouse(index, false, true);
   }

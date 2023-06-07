@@ -65,6 +65,18 @@ class HouseModel {
     }
     if (hasNoProgress) hasNoProgress = false;
   }
+
+  void moveNextFloor() {
+    if (_floorIndex == _floorsFlats.length - 1) {
+      // case when this is the last floor in the section
+      buildingCovered = true;
+      return;
+    }
+    _floorIndex += 1;
+    floor = _floorsFlats[_floorIndex].floorNumber;
+    flat = 0;
+    flatsLeft = _floorsFlats[_floorIndex].flatsAmount;
+  }
 }
 
 class FloorModel {
