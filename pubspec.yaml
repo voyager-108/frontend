@@ -46,6 +46,12 @@ dependencies:
   video_compress: ^3.1.2
   sensors_plus: ^3.0.1
   dio: ^5.1.2
+#  flutter_pytorch: ^1.0.1
+#  tflite_flutter: ^0.10.1
+#  image: ^4.0.17
+#  downloads_path_provider_28: ^0.1.2
+  tflite: ^1.1.2
+
 
 dev_dependencies:
   flutter_test:
@@ -72,9 +78,14 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+   - assets/yolo.pt
+   - assets/apples.png
+   - assets/labels.txt
+   - assets/yolo.torchscript
+   - assets/yolo_opt.torchscript
+   - assets/yolo_float32.tflite
+   - assets/best_float32.tflite
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
