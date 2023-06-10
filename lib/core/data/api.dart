@@ -5,10 +5,10 @@ import 'package:dio/dio.dart';
 import '../../models/house_model.dart';
 
 class API {
-  final dio = Dio(BaseOptions(baseUrl: 'http://178.170.197.93:8080'));
-  final mlDio = Dio(BaseOptions(baseUrl: 'http://178.170.197.93:7080'));
-  final embeddings = List<String>.empty(growable: true);
-  final yoloResults = List<String>.empty(growable: true);
+  final dio = Dio(BaseOptions(baseUrl: 'http://voyager108.ru:8000'));
+  String? session;
+  // final embeddings = List<String>.empty(growable: true);
+  // final yoloResults = List<String>.empty(growable: true);
 
   Future<List<HouseModel>> getOptionsForLocation(LocationData location) async {
     final res = await dio.post("/api/location-section", data: {
@@ -47,32 +47,38 @@ class API {
     dio.post("/api/calculate-floor", data: {'altitude': altitude});
   }
 
-  // Future<int> uploadVideo(File video, {isFinal = false}) async {
-  //
-  // }
-
   Future<int?> uploadVideo(File video, {isLast = false}) async {
-    return Future.delayed(const Duration(seconds: 2), () => 45);
-    // final formData = isLast
-    //     ? FormData.fromMap({
-    //         "video": await MultipartFile.fromFile(video.path),
-    //         "embeddings": embeddings,
-    //         "yolo_results": yoloResults,
-    //         "isLast": true
-    //       })
-    //     : FormData.fromMap({
-    //         "video": await MultipartFile.fromFile(video.path),
-    //       });
-    // final res = await mlDio.post("/score-card/v2/video", data: formData);
-    // if (isLast) {
-    //   embeddings.clear();
-    //   yoloResults.clear();
-    //   Map<String, dynamic> stats = res.data["stats"];
+    final formData = FormData.fromMap(
+        {"video": await MultipartFile.fromFile(video.path), "final": true});
+    final response = await dio.post("/api/process-video", data: formData);
+    final stats = response.data["stats"];
+    return (double.parse("${stats['final_score'] * 100}")).toInt();
+    // return Future.delayed(const Duration(seconds: 5), () => 50);
+    // if (session == null) {
+    //   // this is the first video to be sent
+    //   final formData =
+    //       FormData.fromMap({"video": await MultipartFile.fromFile(video.path)});
+    //   final response = await dio.post("/api/process-video", data: formData);
+    //   session = response.data['session'];
+    // } else if (isLast) {
+    //   // this is the last video in this session
+    //   final formData = FormData.fromMap({
+    //     "video": await MultipartFile.fromFile(video.path),
+    //     "session": session,
+    //     "final": true
+    //   });
+    //   final response = await dio.post("/api/process-video", data: formData);
+    //   session = null;
+    //   final stats = response.data["stats"];
     //   return (double.parse("${stats['final_score'] * 100}")).toInt();
     // } else {
-    //   embeddings.add(res.data['embeddings']);
-    //   yoloResults.add(res.data['yolo']);
-    //   return null;
+    //   // just a regular video sent to the server
+    //   final formData = FormData.fromMap({
+    //     "video": await MultipartFile.fromFile(video.path),
+    //     "session": session
+    //   });
+    //   dio.post("/api/process-video", data: formData);
     // }
+    // return null;
   }
 }

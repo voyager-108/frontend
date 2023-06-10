@@ -36,7 +36,7 @@ class DI {
       Provider((ref) => HousePageController(ref));
 
   // progress view type
-  static final progressViewType = StateProvider((_) => ProgressViewType.grid);
+  static final progressViewType = StateProvider((_) => ProgressViewType.list);
 
   // API
   static final api = Provider<API>((_) => API());
@@ -52,6 +52,7 @@ class DI {
   // accelerometer
   static final accelerometerControllerProvider =
       Provider((ref) => AccelerometerController(ref));
+  static final userHeight = StateProvider<double?>((ref) => null);
 
   // progress list scroll controller
   static final verticalScrollController = Provider((ref) => ScrollController());

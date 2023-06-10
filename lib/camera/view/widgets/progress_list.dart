@@ -32,16 +32,19 @@ class _ProgressListState extends ConsumerState {
   @override
   Widget build(BuildContext context) {
     if (ref.watch(DI.progressViewType) == ProgressViewType.list) {
-      return ListView.builder(
-          itemCount: ref.watch(DI.housePageState).progressLength(),
-          itemBuilder: (context, index) {
-            final state = ref.watch(DI.housePageState).progressElement(index)!;
-            return ListTile(
-              title: Text(
-                  "Этаж ${state.floorNumber}, квартира ${state.flatNumber}"),
-              subtitle: state.status == null ? null : Text(state.status!),
-            );
-          });
+      return Expanded(
+        child: ListView.builder(
+            itemCount: ref.watch(DI.housePageState).progressLength(),
+            itemBuilder: (context, index) {
+              final state =
+                  ref.watch(DI.housePageState).progressElement(index)!;
+              return ListTile(
+                title: Text(
+                    "Этаж ${state.floorNumber}, квартира ${state.flatNumber}"),
+                subtitle: state.status == null ? null : Text(state.status!),
+              );
+            }),
+      );
     }
     // ProgressViewType.grid
     final gridData = ref.watch(DI.housePageState).formProgressGrid();

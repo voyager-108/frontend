@@ -15,15 +15,15 @@ import 'dart:developer' as dev;
 class CameraPageController {
   final Ref _ref;
   CameraManager? manager;
-  static const int splitPeriod = 3;
+  static const int splitPeriod = 5;
   late final Timer timer;
 
   CameraPageController(this._ref) {
-    timer = Timer.periodic(const Duration(seconds: splitPeriod), (timer) {
-      if (timer.tick != 0) {
-        splitRecording();
-      }
-    });
+    // timer = Timer.periodic(const Duration(seconds: splitPeriod), (timer) {
+    //   if (timer.tick != 0) {
+    //     splitRecording();
+    //   }
+    // });
   }
 
   Future<void> initCamera() async {
@@ -32,7 +32,7 @@ class CameraPageController {
     final cam = cameras.firstWhere(
         (camera) => camera.lensDirection == CameraLensDirection.back);
     manager = CameraManager.def(
-        CameraController(cam, ResolutionPreset.high, enableAudio: false));
+        CameraController(cam, ResolutionPreset.medium, enableAudio: false));
     _ref.read(DI.cameraControllerProvider.notifier).state = manager?.camera;
     await manager?.init();
     _ref.read(CameraDI.isCameraInitialized.notifier).state = true;

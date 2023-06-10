@@ -21,20 +21,16 @@ class CameraManager {
 
   Future<void> startRecording() async {
     await camera.startVideoRecording();
-    state = CameraState.recording;
+    await Future.delayed(const Duration(milliseconds: 100), () {
+      state = CameraState.recording;
+    });
   }
 
   Future<void> stopRecording() async {
-    final startTime = DateTime.now();
-    const delta = Duration(seconds: 5);
-    while (state != CameraState.recording &&
-        DateTime.now().subtract(delta).compareTo(startTime) < 0) {
-      // wait
-    }
-    // the state is incorrect to stop the video
-    if (state != CameraState.recording) return;
-    await camera.stopVideoRecording();
-    state = CameraState.idle;
+    await Future.delayed(const Duration(milliseconds: 500), () async {
+      await camera.stopVideoRecording();
+      state = CameraState.idle;
+    });
   }
 
   Future<void> start() async {
@@ -70,11 +66,13 @@ class CameraManager {
   Future<File?> stop() async {
     if (state == CameraState.idle) return null;
     if (state == CameraState.preparing) {
+      print("--- Preparing state ---");
       stopRecording();
       final file = lastFile;
       lastFile = null;
       return file;
     }
+    print("--- Recording ---");
     state = CameraState.preparing;
     lastFile = null;
     final file = File((await camera.stopVideoRecording()).path);
