@@ -47,9 +47,20 @@ class API {
     dio.post("/api/calculate-floor", data: {'altitude': altitude});
   }
 
-  Future<int?> uploadVideo(File video, {isLast = false}) async {
-    final formData = FormData.fromMap(
-        {"video": await MultipartFile.fromFile(video.path), "final": true});
+  Future<int?> uploadVideo(File video, List<LocationData> locations,
+      {isLast = false}) async {
+    final formData = FormData.fromMap({
+      "video": await MultipartFile.fromFile(video.path),
+      "final": true,
+      "locations": locations
+          .map((e) => {
+                "latitude": e.latitude,
+                "longitude": e.longitude,
+                "accuracy": e.accuracy,
+                "altitude": e.altitude,
+              })
+          .toList(growable: false)
+    });
     final response = await dio.post("/api/process-video", data: formData);
     final stats = response.data["stats"];
     return (double.parse("${stats['final_score'] * 100}")).toInt();

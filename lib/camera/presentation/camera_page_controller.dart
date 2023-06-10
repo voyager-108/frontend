@@ -50,20 +50,20 @@ class CameraPageController {
   void startRecording() async {
     dev.log("Started recording a new video");
     _ref.read(DI.housePageState).startRecording();
-    // Locations don't work
-    // _ref.read(DI.locationHistoryProvider).startRecording();
+    // Locations
+    _ref.read(DI.locationHistoryProvider).startRecording();
     await manager?.start();
   }
 
-  void splitRecording() async {
-    dev.log("Split the video");
-    final file = await manager?.split();
-    try {
-      _ref.read(DI.api).uploadVideo(file!);
-    } catch (e) {
-      dev.log("Error while uploading the video in the split");
-    }
-  }
+  // void splitRecording() async {
+  //   dev.log("Split the video");
+  //   final file = await manager?.split();
+  //   try {
+  //     _ref.read(DI.api).uploadVideo(file!);
+  //   } catch (e) {
+  //     dev.log("Error while uploading the video in the split");
+  //   }
+  // }
 
   void stopRecording() async {
     if (_ref.read(DI.housePageState).getState() == null) {
@@ -79,12 +79,13 @@ class CameraPageController {
     dev.log("Stopped recording the video");
     final file = await manager?.stop();
     // Locations don't work
-    // final locations = _ref.read(DI.locationHistoryProvider).stopRecording();
+    final locations = _ref.read(DI.locationHistoryProvider).stopRecording();
     _ref.read(DI.housePageState.notifier).updateProgress(
         pIndex, ProcessedVideoState.upload, "Загрузка и обработка");
     try {
       int percent =
-          await _ref.read(DI.api).uploadVideo(file!, isLast: true) ?? 0;
+          await _ref.read(DI.api).uploadVideo(file!, locations, isLast: true) ??
+              0;
       _ref
           .read(DI.housePageState.notifier)
           .updateProgress(pIndex, ProcessedVideoState.result, "$percent%");
