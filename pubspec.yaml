@@ -46,7 +46,6 @@ dependencies:
   video_compress: ^3.1.2
   sensors_plus: ^3.0.1
   dio: ^5.1.2
-  ml_linalg: ^13.11.31
 
 
 dev_dependencies:
