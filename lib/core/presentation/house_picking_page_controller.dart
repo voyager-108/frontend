@@ -21,6 +21,7 @@ class HousePickingPageController {
   void updatePermissionStatus() async {
     _ref.read(DI.locationPermissionStatus.notifier).state =
         await Permission.location.status;
+    _ref.read(DI.locationManagerProvider).init(_ref);
     dev.log("${_ref.read(DI.locationPermissionStatus)}");
   }
 
